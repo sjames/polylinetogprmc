@@ -63,17 +63,17 @@ fn main() {
     let de_polyline =
         polyline::decode_polyline(&contents, 5).expect("Unable to decode polyline string");
 
-    println!("{:?}", de_polyline);
+    //println!("{:?}", de_polyline);
 
-    for point in de_polyline.points_iter() {
-        println!("Point {:?}", point);
-    }
+    //for point in de_polyline.points_iter() {
+    //    println!("Point {:?}", point);
+    //}
 
     let mut collection = Vec::new();
 
 
     for line in de_polyline.lines() {
-        println!("Line {:?}", line);
+      //  println!("Line {:?}", line);
         collection.push(line_to_points(&line, (opts.speed_kmph / 3.6) as f64, opts.interval_s as f64).unwrap());
     }
 
@@ -110,7 +110,7 @@ fn generate_log(collection: std::vec::Vec<std::vec::Vec<Gprmc>>, interval_s : f6
             let (lng, ew) = lng_to_ew(pos.location.lng());
 
             let content = format!(
-                "GPRMC,{:02}{:02}{:02},A,{},{},{},{},{},{},{:02}{:02}{:02},0,W,*",  /* Checksum is invalid -- but dont care about that for now */
+                "GPRMC,{:02}{:02}{:02},A,{},{},{},{},{},{},{:02}{:02}{:02},0,W,*", 
                 now.hour(),now.minute(), now.second(),
                 lat_to_dm(lat),
                 ns,
@@ -154,7 +154,7 @@ fn line_to_points(line: &Line<f64>, speed_m_per_s: f64, interval_s: f64) -> Opti
 
     let speed_in_knots = speed_m_per_s * 1.944;
 
-     println!("Heading : {:?}", heading);
+    // println!("Heading : {:?}", heading);
 
     println!(
         "Distance between {:?} and {:?} -> {:?} metres  number of segments: {:?}",
@@ -189,11 +189,11 @@ fn line_to_points(line: &Line<f64>, speed_m_per_s: f64, interval_s: f64) -> Opti
     if points.len() > 1 {
         points.pop().unwrap();
     }
-    println!(
-        "Length of points {} Last point: {:?}",
-        &points.len(),
-        &points[points.len() - 1]
-    );
+    //println!(
+    //    "Length of points {} Last point: {:?}",
+    //    &points.len(),
+    //    &points[points.len() - 1]
+    //);
     Some(points)
 }
 
