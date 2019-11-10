@@ -250,23 +250,40 @@ fn lng_to_ew(lat: f64) -> (f64, char) {
     (lat.abs(), if lat < 0.0 { 'W' } else { 'E' })
 }
 
+//fn lat_to_dm(dec: f64) -> String {
+//    let deg = dec.trunc() as u32;
+//    let min = dec.fract() * 60.0;
+//    format!("{:02}{:02}.{}", deg, min.trunc() as u32, format_fract(min))
+//}
+
 fn lat_to_dm(dec: f64) -> String {
     let deg = dec.trunc() as u32;
     let min = dec.fract() * 60.0;
-    format!("{:02}{:02}.{}", deg, min.trunc() as u32, format_fract(min))
+    format!("{:02}{:08.5}", deg, min)
 }
 
 fn lng_to_dm(dec: f64) -> String {
     let deg = dec.trunc() as u32;
     let min = dec.fract() * 60.0;
-    format!("{:03}{:02}.{}", deg, min.trunc() as u32, format_fract(min))
+    format!("{:03}{:08.5}", deg, min)
 }
 
+
 fn format_speed(spd: f64) -> String {
-    let trunc = spd.trunc() as u32;
-    let fract = format!("{:.*}", 1, spd.fract());
-    format!("{:03}.{}", trunc, &fract[2..])
+    format!("{:05.1}", spd)
 }
+
+//fn lng_to_dm(dec: f64) -> String {
+//    let deg = dec.trunc() as u32;
+//    let min = dec.fract() * 60.0;
+//    format!("{:03}{:02}.{}", deg, min.trunc() as u32, format_fract(min))
+//}
+
+//fn format_speed(spd: f64) -> String {
+//    let trunc = spd.trunc() as u32;
+//    let fract = format!("{:.*}", 1, spd.fract());
+//    format!("{:03}.{}", trunc, &fract[2..])
+//}
 
 fn format_fract(num: f64) -> String {
     let fract = format!("{:.*}", 5, num.fract());
@@ -326,7 +343,7 @@ fn create_pedestrian_track(
     // find the bearing from the collision point to the rotated point
     let bearing = end.bearing(*previous);
 
-    let track = previous.bearing(*end);
+    let track = bearing_to_heading(previous.bearing(*end));
 
     let mut points = Vec::new();
 
